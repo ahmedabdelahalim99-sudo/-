@@ -229,7 +229,24 @@ nav a{font-size:11px}
 </div>
 </section>
 
+
 <section class="section" id="qibla">
+  <h2 class="heading">🧭 اتجاه القبلة</h2>
+  <div class="panel" style="text-align:center">
+    <p>اتجاه القبلة من القاهرة إلى الكعبة المشرفة</p>
+    <div style="width:220px;height:220px;border:5px solid #397b61;border-radius:50%;margin:25px auto;position:relative;background:#edf5ef;display:flex;align-items:center;justify-content:center">
+      <span style="position:absolute;top:5px;font-weight:bold">شمال N</span>
+      <div id="qiblaNeedle" style="font-size:95px;color:#397b61;transform:rotate(0deg);transition:transform .3s">➤</div>
+      <span style="position:absolute;bottom:5px">جنوب</span>
+    </div>
+    <h3 id="qiblaAngle" style="color:#397b61">اتجاه القبلة: جارٍ الحساب</h3>
+    <p id="qiblaStatus">الاتجاه محسوب من مدينة القاهرة.</p>
+    <button class="action" onclick="startQiblaCompass()">تشغيل بوصلة الهاتف</button>
+    <button class="action" onclick="stopQiblaCompass()">إيقاف البوصلة</button>
+    <p style="font-size:12px;color:#718078">ضع الهاتف بشكل أفقي، واسمح باستخدام مستشعر الاتجاه إذا طلب المتصفح ذلك.</p>
+  </div>
+</section>
+
 <h2 class="heading">🧭 اتجاه القبلة</h2>
 <div class="panel">
 <p>سيتم إضافة تحديد اتجاه القبلة باستخدام موقعك وبوصلة الهاتف.</p>
@@ -647,6 +664,95 @@ prayerTimer = setInterval(() => {
 }, 1000);
 
 setInterval(loadPrayerTimes, 60 * 60 * 1000);
+  
+const cairoLat = 30.0444;
+const cairoLon = 31.2357;
+const makkahLat = 21.4225;
+const makkahLon = 39.8262;
+
+const toRadians = d => d * Math.PI / 180;
+const toDegrees = r => r * 180 / Math.PI;
+
+const dLon = toRadians(makkahLon - cairoLon);
+const lat1 = toRadians(cairoLat);
+const lat2 = toRadians(makkahLat);
+
+const y = Math.sin(dLon) * Math.cos(lat2);
+const x = Math.cos(lat1) * Math.sin(lat2) -
+  Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+
+const qiblaBearing =
+  (toDegrees(Math.atan2(y, x)) + 360) % 360;
+
+document.getElementById("qiblaAngle").textContent =
+  "اتجاه القبلة: " + qiblaBearing.toFixed(1) + "° من الشمال";
+
+let compassActive = false;
+
+function handleCompass(event) {
+  if (event.alpha === null) {
+    document.getElementById("qiblaStatus").textContent =
+      "مستشعر الاتجاه غير متاح في هذا الجهاز.";
+    return;
+  }
+
+  let heading;
+
+  if (typeof event.webkitCompassHeading === "number") {
+    heading = event.webkitCompassHeading;
+  } else {
+    heading = (360 - event.alpha) % 360;
+  }
+
+  const rotation = (qiblaBearing - heading + 360) % 360;
+
+  document.getElementById("qiblaNeedle").style.transform =
+    "rotate(" + rotation + "deg)";
+
+  document.getElementById("qiblaStatus").textContent =
+    "حرّك الهاتف حتى يشير السهم إلى اتجاه القبلة.";
+}
+
+async function startQiblaCompass() {
+  if (compassActive) return;
+
+  if (typeof DeviceOrientationEvent === "undefined") {
+    document.getElementById("qiblaStatus").textContent =
+      "جهازك لا يدعم بوصلة الهاتف.";
+    return;
+  }
+
+  try {
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      const permission =
+        await DeviceOrientationEvent.requestPermission();
+
+      if (permission !== "granted") {
+        throw new Error("لم يتم السماح بالمستشعر");
+      }
+    }
+
+    window.addEventListener("deviceorientation", handleCompass);
+    window.addEventListener("deviceorientationabsolute", handleCompass);
+    compassActive = true;
+
+    document.getElementById("qiblaStatus").textContent =
+      "البوصلة تعمل. أبعد الهاتف عن المعادن والمغناطيس.";
+  } catch (error) {
+    document.getElementById("qiblaStatus").textContent =
+      "تعذر تشغيل البوصلة. تأكد من إذن المستشعر ودعم المتصفح.";
+  }
+}
+
+function stopQiblaCompass() {
+  window.removeEventListener("deviceorientation", handleCompass);
+  window.removeEventListener("deviceorientationabsolute", handleCompass);
+  compassActive = false;
+
+  document.getElementById("qiblaStatus").textContent =
+    "تم إيقاف البوصلة. الزاوية المحسوبة ثابتة.";
+}
+
   
 </script>
 </body>
