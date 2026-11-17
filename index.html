@@ -222,6 +222,21 @@ nav a{font-size:11px}
 </section>
 
 <section class="section" id="hadith">
+  <div class="section-title">
+    <span>📖</span>
+    <h2>الحديث النبوي الشريف</h2>
+  </div>
+
+  <div class="hadith-card">
+    <div class="hadith-label">🌿 حديث اليوم</div>
+    <p id="hadithText">جاري تحميل حديث اليوم...</p>
+    <div class="hadith-divider"></div>
+    <p id="hadithSource"></p>
+    <div id="hadithDay"></div>
+  </div>
+</section>
+
+
 <h2 class="heading">📚 الحديث النبوي</h2>
 <div class="panel">
 <p>قال رسول الله ﷺ: «إنما الأعمال بالنيات»</p>
@@ -753,6 +768,38 @@ function stopQiblaCompass() {
     "تم إيقاف البوصلة. الزاوية المحسوبة ثابتة.";
 }
 
+const dailyHadiths = [
+  {
+    text: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.",
+    source: "صحيح البخاري، حديث رقم 1، وصحيح مسلم، حديث رقم 1907"
+  },
+  {
+    text: "من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت.",
+    source: "صحيح البخاري، حديث رقم 6018، وصحيح مسلم، حديث رقم 47"
+  },
+  {
+    text: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.",
+    source: "صحيح البخاري، حديث رقم 13، وصحيح مسلم، حديث رقم 45"
+  },
+  {
+    text: "الكلمة الطيبة صدقة.",
+    source: "صحيح البخاري، حديث رقم 2989، وصحيح مسلم، حديث رقم 1009"
+  }
+];
+
+const todayHadith = Math.floor(
+  new Date().setHours(0, 0, 0, 0) / 86400000
+) % dailyHadiths.length;
+
+document.getElementById("hadithText").textContent =
+  dailyHadiths[todayHadith].text;
+
+document.getElementById("hadithSource").textContent =
+  "المصدر: " + dailyHadiths[todayHadith].source;
+
+document.getElementById("hadithDay").textContent =
+  "حديث اليوم 🌙";
+  
   
 </script>
 </body>
