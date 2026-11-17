@@ -580,6 +580,41 @@ renderNames(allNames);
     </div>
   </div>
 </section>
+  
+<section class="section" id="calendar">
+  <div class="section-title">
+    <span>🌙</span>
+    <h2>التقويم الإسلامي</h2>
+  </div>
+
+  <div class="calendar-card">
+    <p>تابع التاريخ الهجري والمناسبات الإسلامية</p>
+
+    <div class="calendar-date">
+      <div>التاريخ الهجري</div>
+      <h2 id="hijriDate">جاري التحميل...</h2>
+      <p id="gregorianDate"></p>
+    </div>
+
+    <div class="calendar-controls">
+      <button onclick="changeHijriMonth(-1)">السابق</button>
+      <h3 id="hijriMonthTitle">الشهر الهجري</h3>
+      <button onclick="changeHijriMonth(1)">التالي</button>
+    </div>
+
+    <div id="hijriCalendarGrid" class="hijri-grid"></div>
+
+    <h3>📅 المناسبات الإسلامية</h3>
+    <div id="islamicEvents">جاري تحميل المناسبات...</div>
+
+    <h3>🤲 أيام الصيام المستحبة</h3>
+    <div class="fasting-days">
+      <p>الاثنين والخميس.</p>
+      <p>الأيام البيض: 13 و14 و15 من كل شهر هجري.</p>
+    </div>
+  </div>
+</section>
+
 
 <h2 class="heading">💚 الأدعية</h2>
 <div class="panel"><p>سيتم إضافة أدعية القرآن الكريم والسنة النبوية مع تخريجها.</p></div>
@@ -1319,6 +1354,183 @@ async function copyQuranDua(text) {
 }
 
 loadQuranDuas();
+  
+var hijriAnchorDate = new Date();
+
+var hijriFormatter = new Intl.DateTimeFormat(
+  "en-u-ca-islamic-umalqura",
+  { day: "numeric", month: "numeric", year: "numeric" }
+);
+
+var hijriArabicFormatter = new Intl.DateTimeFormat(
+  "ar-SA-u-ca-islamic-umalqura",
+  { day: "numeric", month: "long", year: "numeric" }
+);
+
+function getHijriParts(date) {
+  var parts = hijriFormatter.formatToParts(date);
+  var result = {};
+
+  parts.forEach(function(part) {
+    result[part.type] = part.value;
+  });
+
+  return {
+    day: Number(result.day),
+    month: Number(result.month),
+    year: Number(result.year)
+  };
+}
+
+function renderHijriCalendar() {
+  var dateText = document.getElementById("hijriDate");
+  var gregorianText = document.getElementById("gregorianDate");
+  var title = document.getElementById("hijriMonthTitle");
+  var grid = document.getElementById("hijriCalendarGrid");
+  var events = document.getElementById("islamicEvents");
+
+  if (!grid || !title) return;
+
+  var today = new Date();
+  var todayParts = getHijriParts(today);
+  var anchorParts = getHijriParts(hijriAnchorDate);
+
+  if (dateText) {
+    dateText.textContent = hijriArabicFormatter.format(today);
+  }
+
+  if (gregorianText) {
+    gregorianText.textContent =
+      new Intl.DateTimeFormat("ar-EG", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }).format(today);
+  }
+
+  var monthDates = [];
+  var start = new Date(hijriAnchorDate);
+  start.setDate(start.getDate() - 40);
+
+  for (var i = 0; i < 81; i++) {
+    var current = new Date(start);
+    current.setDate(start.getDate() + i);
+
+    var parts = getHijriParts(current);
+
+    if (
+      parts.month === anchorParts.month &&
+      parts.year === anchorParts.year
+    ) {
+      monthDates.push(current);
+    }
+  }
+
+  if (!monthDates.length) {
+    grid.textContent = "تعذر عرض التقويم على هذا الجهاز.";
+    return;
+  }
+
+  hijriAnchorDate = new Date(
+    monthDates[Math.floor(monthDates.length / 2)]
+  );
+
+  title.textContent = hijriArabicFormatter.format(hijriAnchorDate);
+
+  grid.innerHTML = "";
+
+  ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء",
+   "الخميس", "الجمعة", "السبت"].forEach(function(day) {
+    var cell = document.createElement("div");
+    cell.textContent = day;
+    cell.style.fontWeight = "bold";
+    grid.appendChild(cell);
+  });
+
+  for (var blank = 0; blank < monthDates[0].getDay(); blank++) {
+    grid.appendChild(document.createElement("div"));
+  }
+
+  monthDates.forEach(function(date) {
+    var parts = getHijriParts(date);
+    var cell = document.createElement("div");
+
+    cell.textContent = parts.day;
+    cell.style.cssText =
+      "padding:12px 4px;text-align:center;border-radius:10px;background:#f0f7f1;color:#24583a;";
+
+    if (
+      parts.day === todayParts.day &&
+      parts.month === todayParts.month &&
+      parts.year === todayParts.year
+    ) {
+      cell.style.background = "#26734b";
+      cell.style.color = "white";
+      cell.style.fontWeight = "bold";
+    }
+
+    grid.appendChild(cell);
+  });
+
+  renderHijriEvents(anchorParts.month);
+}
+
+function renderHijriEvents(month) {
+  var events = document.getElementById("islamicEvents");
+  if (!events) return;
+
+  var eventData = {
+    1: [
+      ["1 محرم", "بداية السنة الهجرية"],
+      ["10 محرم", "يوم عاشوراء"]
+    ],
+    3: [
+      ["12 ربيع الأول", "يُذكر تاريخ المولد النبوي في بعض التقاويم، وفي تحديده خلاف"]
+    ],
+    7: [
+      ["27 رجب", "يُذكر في بعض التقاويم ذكرى الإسراء والمعراج، وتاريخها غير ثابت قطعًا"]
+    ],
+    9: [
+      ["1 رمضان", "بداية شهر رمضان"],
+      ["17 رمضان", "ذكرى غزوة بدر"],
+      ["ليالي العشر الأواخر", "تحرّي ليلة القدر"]
+    ],
+    10: [
+      ["1 شوال", "عيد الفطر"]
+    ],
+    12: [
+      ["9 ذو الحجة", "يوم عرفة"],
+      ["10 ذو الحجة", "عيد الأضحى"]
+    ]
+  };
+
+  events.innerHTML = "";
+
+  var items = eventData[month] || [];
+
+  if (!items.length) {
+    events.textContent =
+      "لا توجد مناسبة رئيسية مدرجة لهذا الشهر.";
+    return;
+  }
+
+  items.forEach(function(item) {
+    var p = document.createElement("p");
+    p.textContent = "🌙 " + item[0] + " — " + item[1];
+    events.appendChild(p);
+  });
+}
+
+function changeHijriMonth(direction) {
+  hijriAnchorDate.setDate(
+    hijriAnchorDate.getDate() + (direction * 35)
+  );
+
+  renderHijriCalendar();
+}
+
+renderHijriCalendar();
   
 </script>
 </body>
