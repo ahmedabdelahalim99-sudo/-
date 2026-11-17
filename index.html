@@ -268,7 +268,26 @@ nav a{font-size:11px}
 </div>
 </section>
 
+
 <section class="section" id="tafsir">
+  <div class="section-title">
+    <span>📖</span>
+    <h2>التفسير القرآني</h2>
+  </div>
+
+  <div class="tafsir-card">
+    <p>اختر السورة لقراءة الآيات وتفسيرها الميسّر</p>
+
+    <select id="tafsirSurah" onchange="loadTafsir()">
+      <option value="">جاري تحميل السور...</option>
+    </select>
+
+    <div id="tafsirContent">
+      اختر سورة لعرض تفسيرها
+    </div>
+  </div>
+</section>
+
 <h2 class="heading">🌿 تفسير القرآن</h2>
 <div class="panel"><p>سيتم إضافة التفاسير الموثوقة مع عرض الآيات ومعانيها ومصادرها.</p></div>
 </section>
@@ -800,6 +819,71 @@ document.getElementById("hadithSource").textContent =
 document.getElementById("hadithDay").textContent =
   "حديث اليوم 🌙";
   
+  
+async function loadTafsirSurahs() {
+  const select = document.getElementById("tafsirSurah");
+  if (!select) return;
+
+  try {
+    const response = await fetch("https://api.alquran.cloud/v1/surah");
+    const result = await response.json();
+
+    select.innerHTML = '<option value="">اختر السورة</option>';
+
+    result.data.forEach(surah => {
+      const option = document.createElement("option");
+      option.value = surah.number;
+      option.textContent = surah.number + " - " + surah.name;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    select.innerHTML = '<option value="">تعذر تحميل السور</option>';
+  }
+}
+
+async function loadTafsir() {
+  const number = document.getElementById("tafsirSurah").value;
+  const content = document.getElementById("tafsirContent");
+
+  if (!number) {
+    content.textContent = "اختر سورة لعرض تفسيرها";
+    return;
+  }
+
+  content.textContent = "جاري تحميل الآيات والتفسير...";
+
+  try {
+    const response = await fetch(
+      "https://api.alquran.cloud/v1/surah/" + number + "/ar.muyassar"
+    );
+    const result = await response.json();
+
+    if (result.code !== 200) throw new Error("تعذر التحميل");
+
+    const verses = result.data.ayahs;
+    content.innerHTML = "";
+
+    verses.forEach(ayah => {
+      const card = document.createElement("div");
+      card.style.cssText =
+        "background:#f4faf5;padding:15px;margin:12px 0;border-radius:12px;";
+
+      const text = document.createElement("p");
+      text.textContent = "﴿" + ayah.text + "﴾";
+
+      const source = document.createElement("small");
+      source.textContent = "التفسير الميسر - الآية " + ayah.numberInSurah;
+
+      card.appendChild(text);
+      card.appendChild(source);
+      content.appendChild(card);
+    });
+  } catch (error) {
+    content.textContent = "حدث خطأ أثناء تحميل التفسير. حاول مرة أخرى.";
+  }
+}
+
+loadTafsirSurahs();
   
 </script>
 </body>
