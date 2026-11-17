@@ -147,6 +147,8 @@ nav a{font-size:11px}
     <label for="reciterSelect">القارئ:</label>
     <select id="reciterSelect" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
       <option value="ar.alafasy">مشاري العفاسي</option>
+<option value="sayed">الشيخ سيد سعيد</option>
+<option value="yasser">الشيخ ياسر الدوسري</option>
     </select>
     <button id="playSurah" type="button" disabled>▶ استماع للسورة كاملة</button>
     <audio id="surahAudio" controls preload="none" style="width:100%;margin-top:15px"></audio>
@@ -714,14 +716,39 @@ async function loadSurah(number) {
 }
 
 // رابط التلاوة الكاملة للسورة
-function setSurahAudio(number) {
-  const reciter = reciterSelect.value;
-  surahAudio.src =
-    "https://cdn.islamic.network/quran/audio-surah/128/" +
-    reciter + "/" + number + ".mp3";
-  surahAudio.load();
-}
 
+function setSurahAudio(number) {
+  number = Number(number);
+
+  const reciter = reciterSelect.value;
+  let audioUrl = "";
+
+  if (reciter === "sayed" && number === 12) {
+    audioUrl = "https://media.way2quran.com/alsaid-saeed/hafs-an-asim/012.mp3";
+  }
+  else if (reciter === "sayed" && number === 5) {
+    audioUrl = "https://media.way2quran.com/alsaid-saeed/hafs-an-asim/005-001.mp3";
+  }
+  else if (reciter === "yasser" && number === 19) {
+    audioUrl = "https://cdn.mp3quran.net/download/audio/yasser-dosari/r1/019.mp3";
+  }
+  else if (reciter === "ar.alafasy") {
+    audioUrl =
+      "https://cdn.islamic.network/quran/audio-surah/128/" +
+      reciter + "/" + number + ".mp3";
+  }
+  else {
+    quranStatus.textContent =
+      "هذا القارئ متاح للسور المحددة فقط. اختر مشاري العفاسي لباقي السور.";
+    surahAudio.removeAttribute("src");
+    playSurah.disabled = true;
+    return;
+  }
+
+  surahAudio.src = audioUrl;
+  surahAudio.load();
+  playSurah.disabled = false;
+}
 surahSelect.addEventListener("change", function () {
   loadSurah(this.value);
 });
