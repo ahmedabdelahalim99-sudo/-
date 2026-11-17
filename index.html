@@ -1,69 +1,658 @@
+
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#b38a3e"><title>الحليم | رفيقك الإيماني</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#b38a3e">
+<title>الحليم | رفيقك الإيماني الشامل</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
 <style>
-:root{--gold:#b38a3e;--gold2:#e7d5a8;--ink:#283128;--muted:#72786f;--paper:#fffdf8;--line:#eee6d6}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.8}
-header{background:linear-gradient(135deg,#fff,#f7efdF);border-bottom:1px solid var(--line);padding:22px 16px;text-align:center}
-.logo{font-size:34px;font-weight:800;color:var(--gold);letter-spacing:1px}.tag{color:var(--muted);font-size:14px}
-nav{display:flex;gap:8px;overflow:auto;padding:12px;background:white;position:sticky;top:0;border-bottom:1px solid var(--line);z-index:3}
-nav button,.btn{border:1px solid var(--gold2);background:#fff;color:#6f5425;border-radius:22px;padding:9px 14px;white-space:nowrap;font-weight:700}
-nav button.active,.btn.primary{background:var(--gold);color:white;border-color:var(--gold)}
-main{max-width:850px;margin:18px auto;padding:0 14px}.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;text-align:center}
-h1,h2{color:#8c6a2d}h2{font-size:22px;margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
-.tile{background:white;border:1px solid var(--line);border-radius:16px;padding:17px 12px;text-align:center;cursor:pointer}.tile b{display:block;color:#8c6a2d;font-size:17px}.tile span{font-size:26px}
-.panel{display:none;background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}.panel.show{display:block}
-input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:7px 0;font-size:16px}
-.ayah,.quote,.dhikr{padding:15px;border-radius:13px;background:#fffaf0;border:1px solid var(--line);margin:10px 0;text-align:center}
-.arabic{font-size:22px;line-height:2.1}.muted{color:var(--muted);font-size:13px}
-.prayers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.prayers div{background:#fffaf0;border-radius:12px;padding:10px;text-align:center}.prayers strong{display:block;color:#8c6a2d}
-.counter{font-size:32px;color:var(--gold);font-weight:bold;text-align:center}.center{text-align:center}
-a{color:#8c6a2d}footer{text-align:center;color:var(--muted);padding:30px 10px;font-size:13px}
-@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.arabic{font-size:20px}}
-</style></head>
+:root {
+--gold:#b38a3e;
+--gold-light:#e7d5a8;
+--gold-dark:#8c6a2d;
+--bg:#fcf9f2;
+--text:#2c352c;
+--muted:#667064;
+--border:#eadfc9;
+--soft:#f4ede0;
+}
+
+* {
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body {
+background:var(--bg);
+color:var(--text);
+font-family:'Tajawal',Arial,sans-serif;
+line-height:1.8;
+min-height:100vh;
+}
+
+header {
+background:linear-gradient(135deg,#fff,#f7efdf);
+border-bottom:1px solid var(--border);
+padding:30px 20px;
+text-align:center;
+}
+
+.logo {
+font-family:'Amiri',serif;
+font-size:42px;
+font-weight:700;
+color:var(--gold-dark);
+}
+
+.tag {
+color:var(--muted);
+font-size:15px;
+}
+
+nav {
+display:flex;
+gap:10px;
+overflow-x:auto;
+padding:14px;
+background:#fff;
+position:sticky;
+top:0;
+z-index:100;
+border-bottom:1px solid var(--border);
+}
+
+button {
+border:1px solid var(--gold-light);
+background:white;
+color:var(--gold-dark);
+border-radius:30px;
+padding:10px 18px;
+font-family:inherit;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+white-space:nowrap;
+}
+
+button.active,.primary {
+background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+color:white;
+}
+
+main {
+max-width:900px;
+margin:25px auto;
+padding:0 16px;
+}
+
+.panel {
+display:none;
+background:white;
+border:1px solid var(--border);
+border-radius:20px;
+padding:26px;
+}
+
+.panel.show {
+display:block;
+}
+
+.hero {
+background:linear-gradient(135deg,#fffcf6,#f4ede0);
+border:1px solid var(--border);
+border-radius:14px;
+padding:28px 20px;
+text-align:center;
+margin-bottom:20px;
+}
+
+.hero h1,h2 {
+font-family:'Amiri',serif;
+color:var(--gold-dark);
+}
+
+.hero h1 {
+font-size:28px;
+}
+
+h2 {
+font-size:26px;
+margin-bottom:14px;
+border-bottom:2px solid var(--soft);
+padding-bottom:8px;
+}
+
+.grid {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px;
+margin-top:18px;
+}
+
+.tile {
+background:white;
+border:1px solid var(--border);
+border-radius:14px;
+padding:20px 16px;
+text-align:center;
+cursor:pointer;
+}
+
+.tile span {
+font-size:32px;
+display:block;
+}
+
+.tile b {
+display:block;
+color:var(--gold-dark);
+font-size:18px;
+}
+
+.tile small,.muted {
+color:var(--muted);
+font-size:13px;
+}
+
+input,select {
+width:100%;
+padding:12px;
+border:1px solid var(--border);
+border-radius:12px;
+margin:10px 0;
+font-family:inherit;
+font-size:15px;
+}
+
+.card,.ayah,.quote,.dhikr {
+padding:20px;
+border-radius:14px;
+background:#fffdf9;
+border:1px solid var(--border);
+margin:14px 0;
+}
+
+.arabic {
+font-family:'Amiri',serif;
+font-size:24px;
+line-height:2.2;
+text-align:center;
+color:#1a251a;
+}
+
+.center {
+text-align:center;
+margin:15px 0;
+}
+
+.audio-box {
+background:var(--soft);
+padding:15px;
+border-radius:14px;
+margin:15px 0;
+}
+
+audio {
+width:100%;
+}
+
+.prayers {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:12px;
+margin-top:15px;
+}
+
+.prayers div {
+background:#fffdf9;
+border:1px solid var(--border);
+border-radius:12px;
+padding:14px;
+text-align:center;
+}
+
+.prayers strong {
+display:block;
+color:var(--gold-dark);
+}
+
+.counter {
+font-size:28px;
+color:var(--gold-dark);
+font-weight:bold;
+}
+
+footer {
+text-align:center;
+color:var(--muted);
+padding:35px 15px;
+margin-top:40px;
+}
+
+@media(max-width:600px) {
+.arabic {font-size:21px;}
+.grid {grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
 <body>
-<header><div class="logo">الحليم</div><div class="tag">رفيقك إلى الطمأنينة والذكر</div></header>
-<nav id="nav">
-<button class="active" data-tab="home">الرئيسية</button><button data-tab="quran">القرآن</button><button data-tab="adhkar">الأذكار</button><button data-tab="prayer">الصلاة</button><button data-tab="hadith">الحديث</button><button data-tab="qibla">القبلة</button><button data-tab="tafsir">التفسير والسيرة</button><button data-tab="ruqya">الرقية</button>
+
+<header>
+  <div class="logo">الحليم</div>
+  <div class="tag">رفيقك الإيماني الشامل — قرآن، أذكار، وأحاديث</div>
+</header>
+
+<nav>
+  <button class="active" onclick="tab('home')">🏠 الرئيسية</button>
+  <button onclick="tab('quran')">📖 القرآن الكريم</button>
+  <button onclick="tab('adhkar')">📿 الأذكار والسبحة</button>
+  <button onclick="tab('ruqya')">🤲 الرقية الشرعية</button>
+  <button onclick="tab('hadith')">🌿 الأحاديث</button>
+  <button onclick="tab('prayer')">🕌 المواقيت</button>
+  <button onclick="tab('qibla')">🧭 القبلة</button>
+  <button onclick="tab('tafsir')">📚 التفسير والسيرة</button>
 </nav>
+
 <main>
-<section id="home" class="panel show"><div class="hero"><h1>السلام عليكم ورحمة الله وبركاته</h1><p>أهلاً بك في الحليم. اجعل لك وردًا من القرآن والذكر كل يوم.</p><div id="today" class="muted"></div></div>
+
+<section id="home" class="panel show">
+<div class="hero">
+<h1>السلام عليكم ورحمة الله وبركاته</h1>
+<p>أهلاً بك في موقع الحليم. اجعل لك ورداً يومياً من القرآن والذكر.</p>
+<div id="today" class="muted"></div>
+</div>
+
 <div class="grid">
-<div class="tile" onclick="tab('quran')"><span>📖</span><b>القرآن الكريم</b><small>تلاوة واستماع</small></div>
-<div class="tile" onclick="tab('adhkar')"><span>📿</span><b>الأذكار</b><small>الصباح والمساء</small></div>
-<div class="tile" onclick="tab('prayer')"><span>🕌</span><b>مواقيت الصلاة</b><small>حسب مدينتك</small></div>
-<div class="tile" onclick="tab('hadith')"><span>🌿</span><b>الأحاديث النبوية</b><small>أحاديث مختارة</small></div>
-<div class="tile" onclick="tab('qibla')"><span>🧭</span><b>اتجاه القبلة</b><small>بوصلة تقريبية</small></div>
-<div class="tile" onclick="tab('tafsir')"><span>📚</span><b>التفسير والسيرة</b><small>مصادر للقراءة</small></div>
-<div class="tile" onclick="tab('ruqya')"><span>🤲</span><b>الرقية الشرعية</b><small>آيات وأدعية</small></div>
-</div></section>
-<section id="quran" class="panel"><h2>القرآن الكريم</h2><p class="muted">اختر سورة لعرض الآيات والاستماع إلى التلاوة. يحتاج اتصالًا بالإنترنت.</p><select id="surah"></select><div class="center"><button class="btn primary" onclick="loadSurah()">عرض السورة</button></div><div id="quranout"></div></section>
-<section id="adhkar" class="panel"><h2>الأذكار</h2><select id="dhikrType" onchange="showDhikr()"><option value="morning">أذكار الصباح</option><option value="evening">أذكار المساء</option><option value="general">أذكار متنوعة</option></select><div id="dhikrout"></div></section>
-<section id="prayer" class="panel"><h2>مواقيت الصلاة والأذان</h2><p class="muted">اكتب اسم المدينة، مثل Cairo أو Alexandria. المواقيت من خدمة AlAdhan.</p><input id="city" value="Cairo" placeholder="المدينة"><input id="country" value="Egypt" placeholder="الدولة"><button class="btn primary" onclick="loadPrayer()">اعرض المواقيت</button><div id="prayerout"></div><p class="muted">الموقع لا يشغّل الأذان تلقائيًا حاليًا؛ يمكنك ضبط تنبيه الصلاة من هاتفك بعد معرفة الموعد.</p></section>
-<section id="hadith" class="panel"><h2>أحاديث نبوية</h2><div class="quote"><div class="arabic">«إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ»</div><p>متفق عليه — صحيح البخاري وصحيح مسلم</p></div><div class="quote"><div class="arabic">«مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ»</div><p>متفق عليه</p></div><div class="quote"><div class="arabic">«لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ»</div><p>متفق عليه</p></div></section>
-<section id="qibla" class="panel"><h2>اتجاه القبلة</h2><p>اسمح للموقع باستخدام موقعك الجغرافي لمعرفة اتجاه القبلة بالنسبة للشمال.</p><button class="btn primary" onclick="qibla()">تحديد اتجاه القبلة</button><div id="qiblaout" class="center"></div><p class="muted">قد لا تدعم بعض الهواتف قراءة اتجاه البوصلة من المتصفح. استخدم تطبيق بوصلة موثوقًا عند الحاجة.</p></section>
-<section id="tafsir" class="panel"><h2>التفسير والسيرة النبوية</h2><div class="quote"><b>للتفسير:</b><p>يمكنك قراءة تفسير القرآن عبر <a href="https://quran.com" target="_blank" rel="noopener">موقع Quran.com</a>.</p></div><div class="quote"><b>للسيرة النبوية:</b><p>ابدأ بالتعرف على السيرة من مصدر موثوق، وتحقق من صحة الروايات قبل نشرها.</p><a href="https://www.islamweb.net" target="_blank" rel="noopener">إسلام ويب</a></div></section>
-<section id="ruqya" class="panel"><h2>الرقية الشرعية</h2><p class="muted">اقرأ بنية الدعاء والاستشفاء، مع اليقين بأن الشفاء من الله، ولا تترك العلاج الطبي عند الحاجة.</p><div class="quote"><b>سورة الفاتحة</b><p>اقرأ سورة الفاتحة كاملة من المصحف.</p></div><div class="quote"><b>آية الكرسي</b><p class="arabic">اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ...</p><p class="muted">البقرة: 255 — اقرأ الآية كاملة من المصحف.</p></div><div class="quote"><b>المعوذات</b><p>سورة الإخلاص، وسورة الفلق، وسورة الناس.</p></div><div class="quote"><div class="arabic">أَذْهِبِ الْبَأْسَ رَبَّ النَّاسِ، اشْفِ أَنْتَ الشَّافِي، لَا شِفَاءَ إِلَّا شِفَاؤُكَ، شِفَاءً لَا يُغَادِرُ سَقَمًا</div><p>دعاء صحيح في الصحيحين.</p></div></section>
-</main><footer>الحليم © <span id="year"></span> — محتوى للتذكير والانتفاع</footer>
+<div class="tile" onclick="tab('quran')">
+<span>📖</span><b>القرآن الكريم</b>
+<small>تلاوة واستماع</small>
+</div>
+
+<div class="tile" onclick="tab('adhkar')">
+<span>📿</span><b>الأذكار والسبحة</b>
+<small>أذكار اليوم والعداد</small>
+</div>
+
+<div class="tile" onclick="tab('ruqya')">
+<span>🤲</span><b>الرقية الشرعية</b>
+<small>آيات وأدعية</small>
+</div>
+
+<div class="tile" onclick="tab('hadith')">
+<span>🌿</span><b>الأحاديث النبوية</b>
+<small>أحاديث مختارة</small>
+</div>
+
+<div class="tile" onclick="tab('prayer')">
+<span>🕌</span><b>مواقيت الصلاة</b>
+<small>حسب مدينتك</small>
+</div>
+
+<div class="tile" onclick="tab('qibla')">
+<span>🧭</span><b>اتجاه القبلة</b>
+<small>تحديد الاتجاه</small>
+</div>
+
+<div class="tile" onclick="tab('tafsir')">
+<span>📚</span><b>التفسير والسيرة</b>
+<small>معاني القرآن والسيرة</small>
+</div>
+</div>
+</section>
+
+<section id="quran" class="panel">
+<h2>القرآن الكريم</h2>
+<p class="muted">اختر السورة والقارئ للاستماع وقراءة السورة كاملة.</p>
+
+<label>السورة:</label>
+<select id="surah"></select>
+
+<label>القارئ:</label>
+<select id="reciter">
+<option value="ar.alafasy">مشاري العفاسي</option>
+<option value="ar.abdulbasitmurattal">عبد الباسط عبد الصمد</option>
+<option value="ar.minshawi">محمد صديق المنشاوي</option>
+<option value="ar.husary">محمود خليل الحصري</option>
+<option value="ar.hudhaify">علي بن أحمد الحذيفي</option>
+</select>
+
+<button class="primary" onclick="loadSurah()">عرض السورة والاستماع</button>
+
+<div id="quranAudio" class="audio-box"></div>
+<div id="quranText"></div>
+</section>
+
+<section id="adhkar" class="panel">
+<h2>الأذكار والسبحة</h2>
+
+<select id="dhikrGroup" onchange="renderAdhkar()">
+<option value="morning">أذكار الصباح</option>
+<option value="evening">أذكار المساء</option>
+<option value="after">أذكار بعد الصلاة</option>
+<option value="sleep">أذكار النوم</option>
+</select>
+
+<div id="adhkarList"></div>
+
+<div class="card center">
+<h3>السبحة الإلكترونية</h3>
+<div class="arabic" id="tasbeehText">سبحان الله</div>
+<div class="counter" id="count">0</div>
+
+<button class="primary" onclick="countUp()">تسبيح</button>
+<button onclick="resetCount()">تصفير</button>
+<button onclick="nextTasbeeh()">تغيير الذكر</button>
+</div>
+</section>
+
+<section id="ruqya" class="panel">
+<h2>الرقية الشرعية</h2>
+<p>اقرأ الآيات والأدعية التالية بنية الدعاء والشفاء.</p>
+<div id="ruqyaList"></div>
+</section>
+
+<section id="hadith" class="panel">
+<h2>الأحاديث النبوية</h2>
+<div id="hadithList"></div>
+</section>
+
+<section id="prayer" class="panel">
+<h2>مواقيت الصلاة</h2>
+
+<label>المدينة:</label>
+<input id="city" value="Cairo">
+
+<label>الدولة:</label>
+<input id="country" value="Egypt">
+
+<button class="primary" onclick="loadPrayer()">عرض مواقيت الصلاة</button>
+
+<div id="prayerResult"></div>
+</section>
+
+<section id="qibla" class="panel">
+<h2>اتجاه القبلة</h2>
+<p>اسمح للموقع باستخدام موقعك الجغرافي لتحديد اتجاه القبلة.</p>
+
+<button class="primary" onclick="getQibla()">تحديد اتجاه القبلة</button>
+
+<div class="center">
+<div id="compass" style="font-size:80px">🧭</div>
+<div id="qiblaResult">لم يتم تحديد الاتجاه بعد.</div>
+</div>
+</section>
+
+<section id="tafsir" class="panel">
+<h2>التفسير والسيرة النبوية</h2>
+
+<div class="card">
+<h3>تفسير سورة الفاتحة</h3>
+<p class="arabic">الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</p>
+<p>الثناء الكامل لله وحده، فهو خالق جميع العوالم ومدبرها بنعمه.</p>
+
+<p class="arabic">الرَّحْمَٰنِ الرَّحِيمِ</p>
+<p>الله واسع الرحمة، المتصف بالرحمة الواسعة.</p>
+</div>
+
+<div class="card">
+<h3>من السيرة النبوية</h3>
+<p>وُلد النبي محمد ﷺ في مكة، وبُعث وهو في الأربعين، ودعا إلى توحيد الله ومكارم الأخلاق. هاجر إلى المدينة، ثم عاد إلى مكة فاتحاً، وتوفي ﷺ في المدينة.</p>
+</div>
+
+<div class="card">
+<h3>من أخلاق النبي ﷺ</h3>
+<p>كان صادقاً أميناً، رحيماً بالصغير والكبير، ويحث على حسن الجوار والرحمة والعفو.</p>
+</div>
+</section>
+
+</main>
+
+<footer>
+الحليم © 2026
+<br>
+نسأل الله أن يجعله عملاً نافعاً خالصاً لوجهه الكريم.
+</footer>
+
 <script>
-const tabs=[...document.querySelectorAll('nav button')];
-function tab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('show'));document.getElementById(id).classList.add('show');tabs.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));window.scrollTo({top:0,behavior:'smooth'});}
-tabs.forEach(b=>b.onclick=()=>tab(b.dataset.tab));
-document.getElementById('today').textContent=new Intl.DateTimeFormat('ar-EG',{dateStyle:'full'}).format(new Date());
-document.getElementById('year').textContent=new Date().getFullYear();
+function tab(id) {
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ document.getElementById(id).classList.add('show');
+ const btn=[...document.querySelectorAll('nav button')].find(b=>b.getAttribute('onclick')===`tab('${id}')`);
+ if(btn) btn.classList.add('active');
+ window.scrollTo(0,0);
+}
+
+document.getElementById('today').textContent =
+new Intl.DateTimeFormat('ar-EG',{
+ weekday:'long',year:'numeric',month:'long',day:'numeric'
+}).format(new Date());
+
+const API='https://api.alquran.cloud/v1/';
+
+async function initQuran(){
+ const s=document.getElementById('surah');
+ try{
+  const r=await fetch(API+'surah');
+  const j=await r.json();
+  s.innerHTML=j.data.map(x=>
+   `<option value="${x.number}">${x.number} - ${x.name}</option>`
+  ).join('');
+ }catch(e){
+  s.innerHTML='<option value="1">الفاتحة</option>';
+ }
+}
+initQuran();
+
+async function loadSurah(){
+ const n=document.getElementById('surah').value;
+ const rec=document.getElementById('reciter').value;
+ const box=document.getElementById('quranText');
+ const aud=document.getElementById('quranAudio');
+
+ box.innerHTML='جاري تحميل السورة...';
+ aud.innerHTML='';
+
+ try{
+  const [t,a]=await Promise.all([
+   fetch(API+'surah/'+n+'/quran-uthmani'),
+   fetch(API+'surah/'+n+'/'+rec)
+  ]);
+
+  const text=await t.json();
+  const audio=await a.json();
+
+  box.innerHTML=
+   '<h3 class="center">'+text.data.name+'</h3>'+
+   text.data.ayahs.map(x=>
+    `<div class="card arabic">${x.text} ۞ ${x.numberInSurah}</div>`
+   ).join('');
+
+  aud.innerHTML=
+   '<h3>استماع للسورة</h3>'+
+   `<audio controls src="${audio.data.ayahs[0].audio}"></audio>`;
+
+ }catch(e){
+  box.innerHTML='تعذر تحميل السورة. تحقق من الإنترنت.';
+ }
+}
+
 const adhkar={
-morning:[['أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.',1],['اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.',1],['رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.',3],['سبحان الله وبحمده.',100]],
-evening:[['أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.',1],['اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.',1],['رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.',3],['سبحان الله وبحمده.',100]],
-general:[['سبحان الله.',33],['الحمد لله.',33],['الله أكبر.',34],['أستغفر الله وأتوب إليه.',100],['لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.',10]]
+ morning:[
+  ['أصبحنا وأصبح الملك لله والحمد لله.',1],
+  ['اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.',1],
+  ['رضيت بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً.',3],
+  ['سبحان الله وبحمده.',100],
+  ['أستغفر الله وأتوب إليه.',100]
+ ],
+ evening:[
+  ['أمسينا وأمسى الملك لله والحمد لله.',1],
+  ['اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.',1],
+  ['رضيت بالله رباً وبالإسلام ديناً وبمحمد ﷺ نبياً.',3],
+  ['سبحان الله وبحمده.',100]
+ ],
+ after:[
+  ['أستغفر الله.',3],
+  ['اللهم أنت السلام ومنك السلام تباركت يا ذا الجلال والإكرام.',1],
+  ['سبحان الله.',33],
+  ['الحمد لله.',33],
+  ['الله أكبر.',34]
+ ],
+ sleep:[
+  ['باسمك اللهم أموت وأحيا.',1],
+  ['سبحان الله.',33],
+  ['الحمد لله.',33],
+  ['الله أكبر.',34]
+ ]
 };
-function showDhikr(){let list=adhkar[document.getElementById('dhikrType').value];document.getElementById('dhikrout').innerHTML=list.map((d,i)=>`<div class="dhikr"><div class="arabic">${d[0]}</div><p>العدد المستحب: ${d[1]}</p><div class="counter" id="c${i}">0</div><button class="btn primary" onclick="inc(${i},${d[1]})">سبّح</button> <button class="btn" onclick="document.getElementById('c${i}').textContent=0">إعادة</button></div>`).join('')}
-function inc(i,max){let e=document.getElementById('c'+i);e.textContent=Math.min(max,Number(e.textContent)+1)}
-showDhikr();
-async function loadSurah(){let n=document.getElementById('surah').value,o=document.getElementById('quranout');o.textContent='جارٍ تحميل السورة...';try{let r=await fetch(`https://api.alquran.cloud/v1/surah/${n}/ar.alafasy`);let j=await r.json();if(j.code!==200)throw Error();o.innerHTML=`<h3>${j.data.name}</h3><audio controls style="width:100%" src="${j.data.ayahs[0].audio}"></audio>`+j.data.ayahs.map(a=>`<div class="ayah"><div class="arabic">${a.text} ۝</div><small>${a.numberInSurah}</small></div>`).join('')}catch(e){o.textContent='تعذر التحميل. تأكد من اتصال الإنترنت ثم حاول مرة أخرى.'}}
-async function initSurahs(){try{let r=await fetch('https://api.alquran.cloud/v1/surah');let j=await r.json();document.getElementById('surah').innerHTML=j.data.map(s=>`<option value="${s.number}">${s.number}. ${s.name}</option>`).join('')}catch(e){document.getElementById('surah').innerHTML='<option>تعذر تحميل قائمة السور</option>'}}
-initSurahs();
-async function loadPrayer(){let c=document.getElementById('city').value.trim(),k=document.getElementById('country').value.trim(),o=document.getElementById('prayerout');if(!c||!k){o.textContent='اكتب المدينة والدولة';return}o.textContent='جارٍ تحميل المواقيت...';try{let r=await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(c)}&country=${encodeURIComponent(k)}&method=5`),j=await r.json(),t=j.data.timings;o.innerHTML='<div class="prayers">'+[['الفجر',t.Fajr],['الشروق',t.Sunrise],['الظهر',t.Dhuhr],['العصر',t.Asr],['المغرب',t.Maghrib],['العشاء',t.Isha]].map(x=>`<div><strong>${x[0]}</strong>${x[1]}</div>`).join('')+'</div><p class="muted">التاريخ: '+j.data.date.readable+'</p>'}catch(e){o.textContent='تعذر تحميل المواقيت. حاول لاحقًا.'}}
-async function qibla(){let o=document.getElementById('qiblaout');if(!navigator.geolocation){o.textContent='المتصفح لا يدعم تحديد الموقع';return}o.textContent='جارٍ تحديد موقعك...';navigator.geolocation.getCurrentPosition(async p=>{try{let r=await fetch(`https://api.aladhan.com/v1/qibla/${p.coords.latitude}/${p.coords.longitude}`),j=await r.json();o.innerHTML=`<div class="counter">${Math.round(j.data.direction)}°</div><p>زاوية القبلة من اتجاه الشمال الحقيقي</p>`}catch(e){o.textContent='تعذر حساب الاتجاه'}},()=>o.textContent='لم يتم السماح بتحديد الموقع. فعّل إذن الموقع من إعدادات المتصفح.')}
-</script></body></html>
+
+function renderAdhkar(){
+ const group=document.getElementById('dhikrGroup').value;
+ document.getElementById('adhkarList').innerHTML=
+ adhkar[group].map(x=>
+  `<div class="card">
+  <div class="arabic">${x[0]}</div>
+  <p class="center">التكرار: ${x[1]}</p>
+  </div>`
+ ).join('');
+}
+renderAdhkar();
+
+let count=0;
+let ti=0;
+
+const tasbeeh=[
+ 'سبحان الله',
+ 'الحمد لله',
+ 'الله أكبر',
+ 'لا إله إلا الله',
+ 'أستغفر الله'
+];
+
+function countUp(){
+ count++;
+ document.getElementById('count').textContent=count;
+}
+
+function resetCount(){
+ count=0;
+ document.getElementById('count').textContent=0;
+}
+
+function nextTasbeeh(){
+ ti=(ti+1)%tasbeeh.length;
+ document.getElementById('tasbeehText').textContent=tasbeeh[ti];
+ resetCount();
+}
+
+const ruqya=[
+ ['سورة الفاتحة','بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ۝ الرَّحْمَٰنِ الرَّحِيمِ ۝ مَالِكِ يَوْمِ الدِّينِ ۝ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ۝ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ۝ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ'],
+ ['آية الكرسي','اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ...'],
+ ['سورة الإخلاص','قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ'],
+ ['دعاء الرقية','أذهب البأس رب الناس، واشف أنت الشافي، لا شفاء إلا شفاؤك، شفاء لا يغادر سقماً.']
+];
+
+document.getElementById('ruqyaList').innerHTML=
+ruqya.map(x=>
+ `<div class="card">
+ <h3 class="center">${x[0]}</h3>
+ <p class="arabic">${x[1]}</p>
+ </div>`
+).join('');
+
+const hadith=[
+ ['إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.','متفق عليه'],
+ ['من كان يؤمن بالله واليوم الآخر فليقل خيراً أو ليصمت.','متفق عليه'],
+ ['لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.','متفق عليه'],
+ ['الكلمة الطيبة صدقة.','متفق عليه'],
+ ['يسروا ولا تعسروا وبشروا ولا تنفروا.','متفق عليه']
+];
+
+document.getElementById('hadithList').innerHTML=
+hadith.map(x=>
+ `<div class="card">
+ <p class="arabic">${x[0]}</p>
+ <p class="center muted">${x[1]}</p>
+ </div>`
+).join('');
+
+async function loadPrayer(){
+ const city=document.getElementById('city').value;
+ const country=document.getElementById('country').value;
+ const out=document.getElementById('prayerResult');
+
+ out.innerHTML='جاري تحميل المواقيت...';
+
+ try{
+  const url=
+  'https://api.aladhan.com/v1/timingsByCity?city='+
+  encodeURIComponent(city)+
+  '&country='+encodeURIComponent(country)+
+  '&method=5';
+
+  const r=await fetch(url);
+  const j=await r.json();
+  const t=j.data.timings;
+
+  const names=[
+   ['الفجر',t.Fajr],
+   ['الشروق',t.Sunrise],
+   ['الظهر',t.Dhuhr],
+   ['العصر',t.Asr],
+   ['المغرب',t.Maghrib],
+   ['العشاء',t.Isha]
+  ];
+
+  out.innerHTML=
+  '<div class="prayers">'+
+  names.map(x=>
+   `<div><strong>${x[0]}</strong>${x[1]}</div>`
+  ).join('')+
+  '</div>';
+
+ }catch(e){
+  out.innerHTML='تعذر تحميل المواقيت. تحقق من الإنترنت.';
+ }
+}
+
+function getQibla(){
+ const out=document.getElementById('qiblaResult');
+
+ if(!navigator.geolocation){
+  out.textContent='المتصفح لا يدعم تحديد الموقع.';
+  return;
+ }
+
+ out.textContent='جاري تحديد موقعك...';
+
+ navigator.geolocation.getCurrentPosition(pos=>{
+  const lat=pos.coords.latitude;
+  const lon=pos.coords.longitude;
+
+  const toRad=x=>x*Math.PI/180;
+
+  const y=Math.sin(toRad(39.8262-lon));
+  const x=Math.cos(toRad(lat))*Math.tan(toRad(21.4225))
+   -Math.sin(toRad(lat))*Math.cos(toRad(39.8262-lon));
+
+  const angle=(Math.atan2(y,x)*180/Math.PI+360)%360;
+
+  out.innerHTML='اتجاه القبلة: <strong>'+
+  angle.toFixed(1)+'°</strong> من الشمال الحقيقي تقريباً.';
+
+  document.getElementById('compass').style.transform=
+  'rotate('+angle+'deg)';
+
+ },()=>{
+  out.textContent='تعذر تحديد موقعك. اسمح باستخدام الموقع وحاول مرة أخرى.';
+ });
+}
+</script>
+</body>
+</html>
