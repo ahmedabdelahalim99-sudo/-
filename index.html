@@ -153,7 +153,41 @@ nav a{font-size:11px}
 </section>
 
 
+
 <section class="section" id="azkar">
+  <h2 class="heading">📿 الأذكار والتسبيح</h2>
+  <div class="panel">
+    <p>اجعل لسانك رطباً بذكر الله 🌿</p>
+
+    <label for="azkarType">اختر مجموعة الأذكار:</label>
+    <select id="azkarType" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option value="morning">أذكار الصباح</option>
+      <option value="evening">أذكار المساء</option>
+      <option value="sleep">أذكار النوم</option>
+      <option value="wake">أذكار الاستيقاظ</option>
+    </select>
+
+    <div id="azkarList" style="margin-top:20px"></div>
+  </div>
+
+  <div class="panel" style="margin-top:20px;text-align:center">
+    <h3>عداد التسبيح</h3>
+    <p id="tasbihText">سبحان الله</p>
+    <div id="tasbihCount" style="font-size:48px;color:#397b61;font-weight:bold">0</div>
+    <button class="action" onclick="increaseTasbih()">سبّح</button>
+    <button class="action" onclick="resetTasbih()">إعادة العداد</button>
+    <p style="font-size:12px;color:#718078">اختر الذكر الذي تريد التسبيح به:</p>
+    <select id="tasbihChoice" onchange="changeTasbih()" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option>سبحان الله</option>
+      <option>الحمد لله</option>
+      <option>الله أكبر</option>
+      <option>لا إله إلا الله</option>
+      <option>أستغفر الله</option>
+      <option>اللهم صل وسلم على نبينا محمد</option>
+    </select>
+  </div>
+</section>
+
 <h2 class="heading">📿 الأذكار</h2>
 <div class="panel">
 <h3>سبحان الله وبحمده</h3>
@@ -339,6 +373,108 @@ surahAudio.addEventListener("error", function () {
 
 loadSurahList();
 
+const azkarData = {
+  morning: [
+    {text:"أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.", count:1},
+    {text:"اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.", count:1},
+    {text:"رضيت بالله رباً، وبالإسلام ديناً، وبمحمد ﷺ نبياً.", count:3},
+    {text:"بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم.", count:3},
+    {text:"سبحان الله وبحمده.", count:100}
+  ],
+  evening: [
+    {text:"أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.", count:1},
+    {text:"اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.", count:1},
+    {text:"رضيت بالله رباً، وبالإسلام ديناً، وبمحمد ﷺ نبياً.", count:3},
+    {text:"بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم.", count:3},
+    {text:"سبحان الله وبحمده.", count:100}
+  ],
+  sleep: [
+    {text:"باسمك اللهم أموت وأحيا.", count:1},
+    {text:"اللهم قني عذابك يوم تبعث عبادك.", count:3},
+    {text:"سبحان الله.", count:33},
+    {text:"الحمد لله.", count:33},
+    {text:"الله أكبر.", count:34}
+  ],
+  wake: [
+    {text:"الحمد لله الذي أحيانا بعدما أماتنا وإليه النشور.", count:1}
+  ]
+};
+
+let azkarProgress = {};
+
+function renderAzkar() {
+  const type = document.getElementById("azkarType").value;
+  const list = document.getElementById("azkarList");
+  list.innerHTML = "";
+
+  azkarData[type].forEach((item, index) => {
+    const key = type + "-" + index;
+    if (azkarProgress[key] === undefined) azkarProgress[key] = 0;
+
+    const card = document.createElement("div");
+    card.className = "panel";
+    card.style.marginBottom = "12px";
+
+    const text = document.createElement("p");
+    text.textContent = item.text;
+    text.style.fontSize = "18px";
+
+    const target = document.createElement("p");
+    target.textContent = "عدد التكرار المطلوب: " + item.count;
+
+    const progress = document.createElement("p");
+    progress.textContent =
+      "تم: " + azkarProgress[key] + " من " + item.count;
+    progress.style.color = "#397b61";
+
+    const button = document.createElement("button");
+    button.className = "action";
+    button.textContent =
+      azkarProgress[key] >= item.count ? "اكتمل الذكر ✓" : "تسبيح";
+
+    button.disabled = azkarProgress[key] >= item.count;
+
+    button.onclick = function() {
+      if (azkarProgress[key] < item.count) {
+        azkarProgress[key]++;
+        renderAzkar();
+      }
+    };
+
+    const reset = document.createElement("button");
+    reset.className = "action";
+    reset.textContent = "إعادة";
+    reset.onclick = function() {
+      azkarProgress[key] = 0;
+      renderAzkar();
+    };
+
+    card.append(text, target, progress, button, reset);
+    list.appendChild(card);
+  });
+}
+
+document.getElementById("azkarType").addEventListener("change", renderAzkar);
+renderAzkar();
+
+let tasbihNumber = 0;
+
+function increaseTasbih() {
+  tasbihNumber++;
+  document.getElementById("tasbihCount").textContent = tasbihNumber;
+}
+
+function resetTasbih() {
+  tasbihNumber = 0;
+  document.getElementById("tasbihCount").textContent = 0;
+}
+
+function changeTasbih() {
+  document.getElementById("tasbihText").textContent =
+    document.getElementById("tasbihChoice").value;
+  resetTasbih();
+  }
+  
 </script>
 </body>
 </html>
