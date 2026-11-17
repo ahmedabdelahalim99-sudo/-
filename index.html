@@ -131,13 +131,27 @@ nav a{font-size:11px}
 </div>
 
 <main class="container">
+
 <section class="section" id="quran">
-<h2 class="heading">📖 القرآن الكريم</h2>
-<div class="panel">
-<p>القرآن الكريم نور القلوب وراحة النفوس.</p>
-<p>سيتم إضافة السور الـ114 والتلاوات الكاملة للقراء في المرحلة التالية.</p>
-</div>
+  <h2 class="heading">📖 القرآن الكريم</h2>
+  <div class="panel">
+    <p>اقرأ كتاب الله واستمع إلى تلاوته بخشوع وطمأنينة.</p>
+    <label for="surahSelect">اختر السورة:</label>
+    <select id="surahSelect" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option value="">جارٍ تحميل السور...</option>
+    </select>
+    <h3 id="surahTitle">القرآن الكريم</h3>
+    <div id="quranStatus">اختر سورة لعرض آياتها.</div>
+    <div id="ayahContainer" style="font-size:23px;line-height:2.4;text-align:justify"></div>
+    <label for="reciterSelect">القارئ:</label>
+    <select id="reciterSelect" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option value="ar.alafasy">مشاري العفاسي</option>
+    </select>
+    <button id="playSurah" type="button" disabled>▶ استماع للسورة كاملة</button>
+    <audio id="surahAudio" controls preload="none" style="width:100%;margin-top:15px"></audio>
+  </div>
 </section>
+
 
 <section class="section" id="azkar">
 <h2 class="heading">📿 الأذكار</h2>
@@ -219,6 +233,112 @@ document.getElementById('home').style.display='block';
 document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
 window.scrollTo(0,0);
 }
+  
+// تحميل فهرس سور القرآن الكريم
+const surahSelect = document.getElementById("surahSelect");
+const surahTitle = document.getElementById("surahTitle");
+const ayahContainer = document.getElementById("ayahContainer");
+const quranStatus = document.getElementById("quranStatus");
+const surahAudio = document.getElementById("surahAudio");
+const playSurah = document.getElementById("playSurah");
+const reciterSelect = document.getElementById("reciterSelect");
+
+const quranAPI = "https://api.alquran.cloud/v1";
+
+async function loadSurahList() {
+  try {
+    const response = await fetch(quranAPI + "/surah");
+    if (!response.ok) throw new Error("تعذر الاتصال");
+    const result = await response.json();
+
+    surahSelect.innerHTML = '<option value="">اختر السورة</option>';
+
+    result.data.forEach(surah => {
+      const option = document.createElement("option");
+      option.value = surah.number;
+      option.textContent = surah.number + " - " + surah.name;
+      surahSelect.appendChild(option);
+    });
+
+    quranStatus.textContent = "تم تحميل سور القرآن الكريم.";
+  } catch (error) {
+    quranStatus.textContent = "تعذر تحميل السور. تأكد من اتصال الإنترنت وحاول مرة أخرى.";
+  }
+}
+
+// تحميل آيات السورة المختارة
+async function loadSurah(number) {
+  if (!number) return;
+
+  quranStatus.textContent = "جارٍ تحميل الآيات...";
+  ayahContainer.innerHTML = "";
+  playSurah.disabled = true;
+  surahAudio.pause();
+
+  try {
+    const response = await fetch(
+      quranAPI + "/surah/" + number + "/quran-uthmani"
+    );
+    if (!response.ok) throw new Error("تعذر تحميل السورة");
+
+    const result = await response.json();
+    const surah = result.data;
+
+    surahTitle.textContent = surah.name;
+    quranStatus.textContent =
+      "عدد الآيات: " + surah.numberOfAyahs;
+
+    surah.ayahs.forEach(ayah => {
+      const span = document.createElement("span");
+      span.textContent = ayah.text + " ﴿" +
+        ayah.numberInSurah + "﴾ ";
+      ayahContainer.appendChild(span);
+    });
+
+    playSurah.disabled = false;
+    setSurahAudio(number);
+
+  } catch (error) {
+    quranStatus.textContent =
+      "حدث خطأ أثناء تحميل الآيات. حاول مرة أخرى.";
+  }
+}
+
+// رابط التلاوة الكاملة للسورة
+function setSurahAudio(number) {
+  const reciter = reciterSelect.value;
+  surahAudio.src =
+    "https://cdn.islamic.network/quran/audio-surah/128/" +
+    reciter + "/" + number + ".mp3";
+  surahAudio.load();
+}
+
+surahSelect.addEventListener("change", function () {
+  loadSurah(this.value);
+});
+
+reciterSelect.addEventListener("change", function () {
+  if (surahSelect.value) {
+    setSurahAudio(surahSelect.value);
+  }
+});
+
+playSurah.addEventListener("click", function () {
+  if (!surahAudio.src) return;
+
+  surahAudio.play().catch(() => {
+    quranStatus.textContent =
+      "تعذر تشغيل الصوت. حاول الضغط على زر التشغيل مرة أخرى.";
+  });
+});
+
+surahAudio.addEventListener("error", function () {
+  quranStatus.textContent =
+    "تعذر تحميل التلاوة حالياً. جرّب مرة أخرى لاحقاً.";
+});
+
+loadSurahList();
+
 </script>
 </body>
 </html>
