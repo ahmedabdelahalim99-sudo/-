@@ -198,7 +198,22 @@ nav a{font-size:11px}
 </div>
 </section>
 
+
 <section class="section" id="prayer">
+  <h2 class="heading">🕌 مواقيت الصلاة في القاهرة</h2>
+  <div class="panel">
+    <p style="color:#397b61;font-weight:bold">القاهرة - جمهورية مصر العربية 🇪🇬</p>
+    <p id="prayerDate">جارٍ تحميل التاريخ...</p>
+    <h3 id="nextPrayerName">الصلاة القادمة</h3>
+    <div id="prayerCountdown" style="font-size:30px;color:#397b61;font-weight:bold">--:--:--</div>
+    <div id="prayerStatus">جارٍ تحميل المواقيت...</div>
+    <div id="prayerTimes" class="cards" style="margin-top:20px"></div>
+    <button class="action" onclick="loadPrayerTimes()">تحديث المواقيت</button>
+    <button class="action" onclick="enablePrayerNotifications()">تفعيل تنبيه الصلاة</button>
+    <p id="notificationStatus" style="font-size:12px;color:#718078">التنبيه يعمل عندما يكون الموقع مفتوحاً ويسمح المتصفح بالإشعارات.</p>
+  </div>
+</section>
+
 <h2 class="heading">🕌 مواقيت الصلاة</h2>
 <div class="panel">
 <p>مواقيت الصلاة تختلف حسب موقعك الجغرافي.</p>
@@ -474,6 +489,164 @@ function changeTasbih() {
     document.getElementById("tasbihChoice").value;
   resetTasbih();
   }
+  
+let prayerData = null;
+let prayerTimer = null;
+let notifiedPrayer = "";
+
+const prayerNames = {
+  Fajr: "الفجر",
+  Dhuhr: "الظهر",
+  Asr: "العصر",
+  Maghrib: "المغرب",
+  Isha: "العشاء"
+};
+
+async function loadPrayerTimes() {
+  const status = document.getElementById("prayerStatus");
+  status.textContent = "جارٍ تحميل مواقيت القاهرة...";
+
+  try {
+    const response = await fetch(
+      "https://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt&method=5"
+    );
+
+    if (!response.ok) throw new Error("Network error");
+
+    const result = await response.json();
+    if (result.code !== 200) throw new Error("API error");
+
+    prayerData = result.data.timings;
+
+    document.getElementById("prayerDate").textContent =
+      "التاريخ الهجري: " +
+      result.data.date.hijri.date;
+
+    const order = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+    const container = document.getElementById("prayerTimes");
+    container.innerHTML = "";
+
+    order.forEach(key => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const name = document.createElement("h3");
+      name.textContent = prayerNames[key];
+
+      const time = document.createElement("p");
+      time.style.fontSize = "19px";
+      time.style.color = "#397b61";
+      time.textContent = prayerData[key];
+
+      card.append(name, time);
+      container.appendChild(card);
+    });
+
+    status.textContent = "تم تحميل مواقيت الصلاة في القاهرة.";
+    updateNextPrayer();
+
+  } catch (error) {
+    status.textContent =
+      "تعذر تحميل المواقيت. تأكد من الإنترنت وحاول التحديث.";
+  }
+}
+
+function getPrayerDateTime(time) {
+  const parts = time.split(":");
+  const date = new Date();
+  date.setHours(Number(parts[0]), Number(parts[1]), 0, 0);
+  return date;
+}
+
+function updateNextPrayer() {
+  if (!prayerData) return;
+
+  const order = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+  const now = new Date();
+  let next = null;
+
+  for (const key of order) {
+    const prayerTime = getPrayerDateTime(prayerData[key]);
+    if (prayerTime > now) {
+      next = {key, time: prayerTime};
+      break;
+    }
+  }
+
+  if (!next) {
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const fajrParts = prayerData.Fajr.split(":");
+    tomorrow.setHours(
+      Number(fajrParts[0]),
+      Number(fajrParts[1]),
+      0,
+      0
+    );
+    next = {key: "Fajr", time: tomorrow};
+  }
+
+  document.getElementById("nextPrayerName").textContent =
+    "الصلاة القادمة: " + prayerNames[next.key];
+
+  const difference = next.time - now;
+  const hours = Math.floor(difference / 3600000);
+  const minutes = Math.floor((difference % 3600000) / 60000);
+  const seconds = Math.floor((difference % 60000) / 1000);
+
+  document.getElementById("prayerCountdown").textContent =
+    [hours, minutes, seconds]
+      .map(n => String(n).padStart(2, "0"))
+      .join(":");
+
+  checkPrayerNotification(order);
+}
+
+function checkPrayerNotification(order) {
+  if (!prayerData || Notification.permission !== "granted") return;
+
+  const now = new Date();
+
+  order.forEach(key => {
+    const prayerTime = getPrayerDateTime(prayerData[key]);
+    const id = now.toDateString() + "-" + key;
+
+    if (
+      Math.abs(now - prayerTime) < 30000 &&
+      notifiedPrayer !== id
+    ) {
+      new Notification("حان الآن موعد صلاة " + prayerNames[key], {
+        body: "حي على الصلاة، حي على الفلاح"
+      });
+      notifiedPrayer = id;
+    }
+  });
+}
+
+async function enablePrayerNotifications() {
+  if (!("Notification" in window)) {
+    document.getElementById("notificationStatus").textContent =
+      "المتصفح لا يدعم الإشعارات.";
+    return;
+  }
+
+  const permission = await Notification.requestPermission();
+
+  document.getElementById("notificationStatus").textContent =
+    permission === "granted"
+      ? "تم السماح بالتنبيهات. اترك الموقع مفتوحاً لاستقبالها."
+      : "لم يتم السماح بالتنبيهات من المتصفح.";
+}
+
+loadPrayerTimes();
+
+if (prayerTimer) clearInterval(prayerTimer);
+
+prayerTimer = setInterval(() => {
+  updateNextPrayer();
+}, 1000);
+
+setInterval(loadPrayerTimes, 60 * 60 * 1000);
   
 </script>
 </body>
