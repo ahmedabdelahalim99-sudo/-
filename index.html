@@ -331,6 +331,167 @@ nav a{font-size:11px}
     </div>
 
     <div class="seerah-item">
+      <h3><svg class="ic" viewBox="0 0 24 24/svg></div><h3>التقويم الإسلامي</h3><p>التاريخ الهجري والمناسبات</p></div>
+</div>
+</main>
+</div>
+
+<main class="container">
+
+<section class="section" id="quran">
+  <h2 class="heading"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.5C10 5 7 4.5 4 4.5v14c3 0 6 .5 8 2 2-1.5 5-2 8-2v-14c-3 0-6 .5-8 2z"/><path d="M12 6.5v14"/></svg> القرآن الكريم</h2>
+  <div class="panel">
+    <p>اقرأ كتاب الله واستمع إلى تلاوته بخشوع وطمأنينة.</p>
+    <label for="surahSelect">اختر السورة:</label>
+    <select id="surahSelect" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option value="">جارٍ تحميل السور...</option>
+    </select>
+    <h3 id="surahTitle">القرآن الكريم</h3>
+    <div id="quranStatus">اختر سورة لعرض آياتها.</div>
+    <div id="ayahContainer" style="font-size:23px;line-height:2.4;text-align:justify"></div>
+    <label for="reciterSelect">القارئ:</label>
+    <select id="reciterSelect" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option value="ar.alafasy">مشاري العفاسي</option>
+<option value="sayed">الشيخ سيد سعيد</option>
+<option value="yasser">الشيخ ياسر الدوسري</option>
+    </select>
+    <button id="playSurah" type="button" disabled><svg class="ic" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 5.5v13l11-6.5z"/></svg> استماع للسورة كاملة</button>
+    <audio id="surahAudio" controls preload="none" style="width:100%;margin-top:15px"></audio>
+  </div>
+</section>
+
+
+
+<section class="section" id="azkar">
+  <h2 class="heading"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10.5" r="6.5" stroke-width="2.6" stroke-dasharray="0.01 3.4" stroke-linecap="round"/><path d="M12 17v3m-1.8 1.5h3.6"/></svg> الأذكار والتسبيح</h2>
+  <div class="panel">
+    <p>اجعل لسانك رطباً بذكر الله <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 18.5C5.5 11 10.5 5.5 19 5c.5 8.5-5 13.5-13.5 13.5z"/><path d="M5.5 18.5c3-4.5 6.5-8 11-10.5"/></svg></p>
+
+    <label for="azkarType">اختر مجموعة الأذكار:</label>
+    <select id="azkarType" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option value="morning">أذكار الصباح</option>
+      <option value="evening">أذكار المساء</option>
+      <option value="sleep">أذكار النوم</option>
+      <option value="wake">أذكار الاستيقاظ</option>
+    </select>
+
+    <div id="azkarList" style="margin-top:20px"></div>
+  </div>
+
+  <div class="panel" style="margin-top:20px;text-align:center">
+    <h3>عداد التسبيح</h3>
+    <p id="tasbihText">سبحان الله</p>
+    <div id="tasbihCount" style="font-size:48px;color:#397b61;font-weight:bold">0</div>
+    <button class="action" onclick="increaseTasbih()">سبّح</button>
+    <button class="action" onclick="resetTasbih()">إعادة العداد</button>
+    <p style="font-size:12px;color:#718078">اختر الذكر الذي تريد التسبيح به:</p>
+    <select id="tasbihChoice" onchange="changeTasbih()" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-family:inherit">
+      <option>سبحان الله</option>
+      <option>الحمد لله</option>
+      <option>الله أكبر</option>
+      <option>لا إله إلا الله</option>
+      <option>أستغفر الله</option>
+      <option>اللهم صل وسلم على نبينا محمد</option>
+    </select>
+  </div>
+</section>
+
+
+
+<section class="section" id="prayer">
+  <h2 class="heading"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.5c-3.2 2.2-5 4.6-5 7.5V19h10v-8c0-2.9-1.8-5.3-5-7.5z"/><path d="M12 3.5V2M3 20.5h18M4.5 20v-5m15 5v-5"/></svg> مواقيت الصلاة في القاهرة</h2>
+  <div class="panel">
+    <p style="color:#397b61;font-weight:bold">القاهرة - جمهورية مصر العربية <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-6.5-5.3-6.5-10A6.5 6.5 0 0 1 12 4.5 6.5 6.5 0 0 1 18.5 11c0 4.7-6.5 10-6.5 10z"/><circle cx="12" cy="11" r="2.2"/></svg></p>
+    <p id="prayerDate">جارٍ تحميل التاريخ...</p>
+    <h3 id="nextPrayerName">الصلاة القادمة</h3>
+    <div id="prayerCountdown" style="font-size:30px;color:#397b61;font-weight:bold">--:--:--</div>
+    <div id="prayerStatus">جارٍ تحميل المواقيت...</div>
+    <div id="prayerTimes" class="cards" style="margin-top:20px"></div>
+    <button class="action" onclick="loadPrayerTimes()">تحديث المواقيت</button>
+    <button class="action" onclick="enablePrayerNotifications()">تفعيل تنبيه الصلاة</button>
+    <p id="notificationStatus" style="font-size:12px;color:#718078">التنبيه يعمل عندما يكون الموقع مفتوحاً ويسمح المتصفح بالإشعارات.</p>
+  </div>
+</section>
+
+
+<section class="section" id="hadith">
+  <div class="section-title">
+    <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.5C10 5 7 4.5 4 4.5v14c3 0 6 .5 8 2 2-1.5 5-2 8-2v-14c-3 0-6 .5-8 2z"/><path d="M12 6.5v14"/></svg></span>
+    <h2>الحديث النبوي الشريف</h2>
+  </div>
+
+  <div class="hadith-card">
+    <div class="hadith-label"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 18.5C5.5 11 10.5 5.5 19 5c.5 8.5-5 13.5-13.5 13.5z"/><path d="M5.5 18.5c3-4.5 6.5-8 11-10.5"/></svg> حديث اليوم</div>
+    <p id="hadithText">جاري تحميل حديث اليوم...</p>
+    <div class="hadith-divider"></div>
+    <p id="hadithSource"></p>
+    <div id="hadithDay"></div>
+  </div>
+</section>
+
+
+
+
+<section class="section" id="qibla">
+  <h2 class="heading"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 4.8-4.8 2.2 2.2-4.8z"/></svg> اتجاه القبلة</h2>
+  <div class="panel" style="text-align:center">
+    <p>اتجاه القبلة من القاهرة إلى الكعبة المشرفة</p>
+    <div style="width:220px;height:220px;border:5px solid #397b61;border-radius:50%;margin:25px auto;position:relative;background:#edf5ef;display:flex;align-items:center;justify-content:center">
+      <span style="position:absolute;top:5px;font-weight:bold">شمال N</span>
+      <div id="qiblaNeedle" style="color:#397b61;transform:rotate(0deg);transition:transform .3s;display:flex;align-items:center;justify-content:center"><svg width="90" height="90" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1.5l5 11h-10z" fill="#c5a45d"/><path d="M12 12.5h5l-5 10z" fill="currentColor"/><path d="M12 12.5h-5l5 10z" fill="currentColor" opacity=".55"/></svg></div>
+      <span style="position:absolute;bottom:5px">جنوب</span>
+    </div>
+    <h3 id="qiblaAngle" style="color:#397b61">اتجاه القبلة: جارٍ الحساب</h3>
+    <p id="qiblaStatus">الاتجاه محسوب من مدينة القاهرة.</p>
+    <button class="action" onclick="startQiblaCompass()">تشغيل بوصلة الهاتف</button>
+    <button class="action" onclick="stopQiblaCompass()">إيقاف البوصلة</button>
+    <p style="font-size:12px;color:#718078">ضع الهاتف بشكل أفقي، واسمح باستخدام مستشعر الاتجاه إذا طلب المتصفح ذلك.</p>
+  </div>
+</section>
+
+
+
+<section class="section" id="tafsir">
+  <div class="section-title">
+    <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 6.5C10 5 7 4.5 4 4.5v14c3 0 6 .5 8 2 2-1.5 5-2 8-2v-14c-3 0-6 .5-8 2z"/><path d="M12 6.5v14"/></svg></span>
+    <h2>التفسير القرآني</h2>
+  </div>
+
+  <div class="tafsir-card">
+    <p>اختر السورة لقراءة الآيات وتفسيرها الميسّر</p>
+
+    <select id="tafsirSurah" onchange="loadTafsir()">
+      <option value="">جاري تحميل السور...</option>
+    </select>
+
+    <div id="tafsirContent">
+      اختر سورة لعرض تفسيرها
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section" id="seerah">
+  <div class="section-title">
+    <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a7 7 0 0 0 9.5 9.5z"/></svg></span>
+    <h2>السيرة النبوية</h2>
+  </div>
+
+  <div class="seerah-card">
+    <p>رحلة نتعرف فيها على حياة خير البشر محمد ﷺ</p>
+
+    <div class="seerah-item">
+      <h3><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 18.5C5.5 11 10.5 5.5 19 5c.5 8.5-5 13.5-13.5 13.5z"/><path d="M5.5 18.5c3-4.5 6.5-8 11-10.5"/></svg> المولد والنشأة</h3>
+      <p>وُلد النبي محمد ﷺ في مكة المكرمة عام الفيل، ونشأ يتيم الأب، ثم فقد أمه وهو صغير، فكفله جده عبد المطلب ثم عمه أبو طالب.</p>
+    </div>
+
+    <div class="seerah-item">
+      <h3><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9z"/><path d="M18.5 3.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" fill="currentColor" stroke="none"/></svg> بداية الوحي</h3>
+      <p>كان النبي ﷺ يتعبد في غار حراء، حتى نزل عليه جبريل عليه السلام بأول آيات القرآن الكريم: اقرأ باسم ربك الذي خلق.</p>
+    </div>
+
+    <div class="seerah-item">
       <h3><svg class="ic" viewBox="0 0 24 24ansition:transform .3s">➤</div>
       <span style="position:absolute;bottom:5px">جنوب</span>
     </div>
